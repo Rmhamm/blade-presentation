@@ -1,0 +1,45 @@
+.reveal nav.sideNav {
+	overflow-y: auto;
+	float: left;
+	z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 0.5em;
+	bottom: 0;
+	display: none;
+	color: #000;
+	background: #fff;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+}
+
+.reveal nav.sideNav > ul {
+    list-style-type: none;
+    margin: 0;
+    display: block;
+}
+
+.reveal nav.sideNav > ul > li {
+	display: block;
+	background: #ccc;
+	padding: 5px 0;
+	margin-bottom: 5px;
+}
+
+.sideNavOpen {
+	float: left;
+	position: absolute;
+	top: 2;
+	left: 2;
+	z-index: 99;
+}
+
+.sideNavOpen .line {
+	display: block;
+	width: 30px;
+	height: 6px;
+	margin-bottom: 4px;
+	background: rgba(255, 255, 255, 0.5);
+}

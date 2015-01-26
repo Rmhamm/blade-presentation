@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Blade templating</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<h1>Blade templating</h1>
+					<p>A quick introduction</p>
+					<small>
+						Down with spaghetti code templates!
+					</small>
+				</section>
+				
+				<section>
+					<section>
+						<h1>What is blade?</h1>
+						<p class="fragment">Blade is a server side templating engine included with Laravel. It's purpose is to provide cleaner method of creating reusable templates.</p>
+					</section>
+					<section>
+						<h2>Making a blade template</h2>
+						<p>Simple make a php file with the extenstion .blade.php</p>
+						<p class="fragment">
+							Blade is PHP and can be used with regular PHP templates.
+						</p>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h1>Echoing</h1>
+						<p>The basics.</p>
+					</section>
+					<section>
+						<h2>Standard PHP Echoing</h2>
+						<pre><code class="php">
+//standard php echo
+&lt;?php echo $variable; ?&gt;
+
+//check if variable is set and provide default if not
+&lt;?php
+	if(isset($variable)){
+		echo $variable;
+	} else {
+		echo 'Other';
+	}
+?&gt;
+
+//alternative ternary variable check
+&lt;?php echo (isset($variable)? $variable : else 'Other'); ?&gt;
+
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Blade Style Echoing</h2>
+						<pre><code class="php">
+//echo variable
+{{ $variable }}
+
+//check if varible is set and provide default if not
+{{ $variable or 'Other' }}
+						</code></pre>
+						<p>
+							Much cleaner!
+						</p>	
+					</section>
+
+					<section>
+					<h2>HTML Entities</h2>
+					<pre><code class="php">
+//standary php
+&lt;?php echo htmlentities($variable); ?&gt;
+
+//blade version
+{{{ $variable }}}
+					</code></pre>
+					</section>
+				</section>
+
+			<section>
+				<section>
+					<h1>Conditionals and looping</h1>
+				</section>
+				<section>
+					<h2>If/elseif/else</h2>
+					<pre><code class="php">
+// standard php
+&lt;?php
+	if($variable == 1) {
+		//do something
+	} elseif ($variable == 2) {
+		//do something else
+	} else {
+		//do something by default
+	}
+?&gt;
+
+// blade
+@if ($variable == 1)
+	//do something
+@elseif ($variable == 2)
+	//do something else
+@else
+	//do something by default
+@endif
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>If/elseif/else continued</h2>
+					<div class="fragment">
+					<p>Ever had code like this?</p>
+					<pre><code class="php">
+&lt;?php if ($variable == 'ugly'): ?&gt;
+	<p>Ugly code is &lt;?php echo $variable; ?&gt;</p>
+&lt;?php elseif ($variable == 'sthap'): ?&gt;
+	<p>It's getting worse isn't it?
+	Please &lt;?php echo $variable; ?&gt;</p>
+&lt;?php else: ?&gt;
+	<p>Is it over yet?</p>
+&lt;?php endif; ?&gt;
+					</code></pre>
+					</div>
+				</section>
+				
+				<section>
+					<h2>Or even this</h2>
+					<pre><code class="php">
+&lt;?php
+if ($variable == 'ugly') {
+	echo "<p> Ugly code is ". $variable . "</p>";
+} elseif ($variable == 'sthap') {
+	$output = "<p>It's getting worse isn't it?";
+	$output .= "Please {$variable} </p>";
+	echo $output;
+} else {
+	echo "<p>Is it over yet?</p>";
+}
+?&gt;
+					</code></pre>	
+				</section>
+				
+				<section>
+					<h2>Do this instead</h2>
+					<pre><code class="php">
+@if ($variable == 'cleaner')
+	<p>So much {{ $variable }}</p>
+@elseif ($variable == 'slimmer')
+	<p>This is so much {{ $variable }}</p>
+@else
+	<p>Yay!</p>
+@endif
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Unless</h2>
+					<p>Alternative checking for false</p>
+					<pre><code class="php">
+@unless ($variable)
+	Oops! Something went wrong.
+@endunless
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Loops</h2>
+					<pre><code class="php">
+// for loop
+@for ($i = 0; $i <= 5; $i++)
+    {{ $i }}
+@endfor
+
+//foreach
+@foreach ($listItems as $item)
+    <li>{{ $item->content }}</li>
+@endforeach
+
+//while loop
+@while (true)
+    <p>...</p>
+@endwhile
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Forelse</h2>
+					<p>Basically an @unless and @foreach combined</p>
+					<pre><code class="php">
+@forelse($listItem as $item)
+	<li>{{ $item->value }}</li>
+@empty
+	<li>No items</li>
+@endforelse
+					</code></pre>
+					<div class="fragment">
+					<p>Cleaner in my opinion</p>
+					<pre><code class="php">
+@unless($listItem)
+	No items
+@else
+	<ul>
+	@foreach($listItem as $item)
+		<li>{{ $item->value }}</li>
+	@endforeach
+	</ul>
+@endunless
+					</code></pre>
+					</div>
+				</section>
+
+				<section>
+					<h2>@each</h2>
+					<pre><code class="php">
+$items = Array ( 
+	[0] => stdClass Object ( [name] => 'first' ) 
+	[1] => stdClass Object ( [name] => 'second' )
+)
+					</code></pre>
+					<pre><code class="php">
+//index.blade.php
+@each('eachTest', $items, 'item', 'noItems')
+					</code></pre>
+					<pre><code class="php">
+//eachTest.blade.php
+<li>{{$item->name}}</li>
+					</code></pre>
+					<pre><code class="php">
+//result
+<li>first</li>
+<li>second</li>
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>@each continued</h2>
+					<p>If there were no $items it would call the noItems.blade.php template defined as the last parameter in the @each call</p>
+					<pre><code class='php'>
+//noItems.blade.php
+<li>no result</li>
+					</code></pre>
+					<p>This step is optional.</p>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1>Templating with Blade</h1>
+				</section>
+				
+				<section>
+					<h2>@include()</h2>
+					<pre><code class="php">
+<body>
+	@include('header')
+	<p>some content</p>
+	@include('footer')
+</body>
+					</code></pre>
+					<p>Exciting right? <small class="fragment">&lt;/sarcasm&gt;</small></p>
+				</section>
+
+				<section>
+					<h2>@include() continued</h2>
+					<p>Passing data from one view to another</p>
+					<pre><code class="php">
+//newsList.blade.php
+<li>{{ $news }}</li>
+
+//notNews.blade.php
+@include('newsList', array('news' => 'testing'))
+					</code></pre>
+					<pre><code class="php">
+//result
+<li>testing</li>
+					</code></pre>
+					<p class="fragment">Ok, but what if we don't want hundreds of templates with includes to maintain?</p>
+				</section>
+
+				<section>
+					<h2>Creating a Reusable Template</h2>
+					<p><small>one template to rule them all</small></p>
+				</section>
+
+				<section>
+					<h2>@yield()</h2>
+					<pre><code class="php">
+//master.blade.php
+
+<div class="content">
+	@yield('content')
+</div>
+
+					</code></pre>
+					
+					<pre><code class="php">
+// index.blade.php
+@extends('master')
+
+@section('content')
+	<p>Body content</p>
+@stop	
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>@extends()</h2>
+					<p>Used to identify the parent template.</p>
+					<pre><code>
+//result
+<div class="content">
+	<p>Body Content</p>
+</div>
+					</code></pre>
+					<p><small>The output from calling the view index.blade.php</small></p>
+				</section>
+
+				<section>
+					<h2>Defining default content</h2>
+					<pre><code class="php">
+// mainNav.blade.php
+<ul class="nav">
+	@section('navigation')
+		<li><a href="#">Home</a></li>
+		<li><a href="#">About</a></li>
+	@show
+</ul>
+					</code></pre>
+					<pre><code class="php">
+// privatenav.blade.php
+@extends('mainNav')
+
+@section('navigation')
+	<li><a href="#">private link</a></li>
+@stop
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Defining default content continued</h2>
+					<pre><code class="php">
+// privatenav.blade.php output
+<ul class="nav">
+	<li><a href="#">private</a></li>
+</ul>
+					</code></pre>
+<p>If we didn't define a @section('navigation') on privatenav.blade.php then it would default to the content provided in mainNav.blade.php</p>
+				</section>
+
+				<section>
+					<h2>@parent</h2>
+					<pre><code class="php">
+// privatenav.blade.php appending onto the default content
+@section('navigation')
+	@parent
+	<li><a href="#">private link</a></li>
+@stop
+					</code></pre>
+					<pre><code class="php">
+// privatenav.blade.php output
+<ul class="nav">
+	<li><a href="#">Home</a></li>
+	<li><a href="#">About</a></li>
+	<li><a href="#">private</a></li>
+</ul>
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>@append</h2>
+					<pre><code class="php">
+// master.blade.php has a section called content
+@extends('master')
+
+@section('content')
+	<p>First Section</p>
+@stop
+
+@section('content')
+	<p>Second Section</p>
+@append
+					</code></pre>
+					<pre><code class="php">
+//output
+<p>First Section</p>
+<p>Second Section</p>
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>@push</h2>
+					<pre><code class="php">
+// master.blade.php has a section called content
+@extends('master')
+
+@section('content')
+	<p>First Section</p>
+@stop
+
+@push('content')
+	<p>Second Section</p>
+@endpush
+					</code></pre>
+					<pre><code class="php">
+//output
+<p>First Section</p>
+<p>Second Section</p>
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Chaining sections</h2>
+					<pre><code class="php">
+// app/views/first.blade.php
+<p>First</p>
+@yield('message')
+@yield('final')
+
+// app/views/second.blade.php
+@extends('first')
+
+@section('message')
+    <p>Second</p>
+    @yield('message')
+@stop
+
+// app/views/third.blade.php
+@extends('second')
+
+@section('message')
+    @parent
+    <p>Third</p>
+    @yield('message')
+@stop
+
+// app/views/fourth.blade.php
+@extends('third')
+
+@section('message')
+    @parent
+    <p>Fourth</p>
+@stop
+
+@section('final')
+    <p>Fifth</p>
+@stop
+					</code></pre>
+					<pre><code class="html">
+<p>First</p>
+<p>Second</p>
+<p>Third</p>
+<p>Fourth</p>
+<p>Fifth</p>
+					</code></pre>
+				</section>
+				<section>
+					<h2>Quiz Time!</h2>
+					<p>Using anything we've learned so far write down a master template on a sheet of paper.</p>
+					<p class="fragment">You have 4 minutes.</p>
+				</section>
+				<section>
+					<h2>Just kidding</h2>
+				</section>
+				<section>
+					<h2>Simple Master Page example</h2>
+					<pre><code class="html">
+&lt;html&gt;
+&lt;head&gt;
+	<title>Site name - @yield('title')</title>
+	@yield('meta')
+	@section('css')
+		&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"&gt;
+		&lt;link rel="stylesheet" href="site.css"&gt;
+	@show
+&lt;/head&gt;
+&lt;body&gt;
+	<nav class="nav">
+		<ul>
+		@section('nav')
+			<li><a href="home">Home</a></li>
+			<li><a href="about">About</a></li>
+			<li><a href="contact">Contact</a></li>
+		@show
+		</ul>
+	</nav>
+	<div class="content">
+		@yield('content')
+	</div>
+	<div class="footer">
+		@yield('footer')
+		@section('scripts')
+			&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"&gt;&lt;/script&gt;
+			&lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"&gt;&lt;/script&gt;
+			&lt;script src="site.js"&gt;&lt;/script&gt;
+		@show
+	</div>
+&lt;/body&gt;
+&lt;/html&gt;
+					</code></pre>
+				</section>
+			</section>
+
+			<section>
+				<h1>That's it for now.</h1>
+				<p>Presentation ideas for the future:</p>
+				<ul>
+					<li>Extending Blade</li>
+					<li>Laravel Form and HTML helpers</li>
+					<li>Building Laravel Bootstrap templates</li>
+					<li>JavaScript IIFE's and Closures</li>
+					<li>Front End Templating</li>
+				</ul>
+			</section>
+			</div>
+
+		</div>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+
+	</body>
+</html>
